@@ -30,6 +30,13 @@ import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JMenuBar;
 
 public class Principal extends JFrame {
 	private JPanel panel_1 = new JPanel();
@@ -47,17 +54,55 @@ public class Principal extends JFrame {
 		panel.setLayout(null);
 		Color verde=new Color(34,35,34);
 		panel.setBackground(verde);
+		Color gris=new Color(196,196,196);
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBackground(verde);
+		menuBar.setBounds(15, 30, 48, 50);
+		panel.add(menuBar);
+		JMenu mnNewMenu = new JMenu("");
+		menuBar.add(mnNewMenu);
+		
+		menuBar.setBorderPainted(false);
+		
+		 mnNewMenu.setBackground(Color.BLACK);
+		 mnNewMenu.setBorderPainted(false);
+		 
+		  
+		  JMenuItem btnSalir = new JMenuItem("Salir");
+		  btnSalir.addActionListener(new ActionListener() {
+		  	public void actionPerformed(ActionEvent e) {
+		  		JOptionPane.showMessageDialog(null, "Nos vemos :)");
+		  		
+		  		dispose();
+		  		
+		  	}
+		  });
+		  btnSalir.setSelected(true);
+		  mnNewMenu.add(btnSalir);
+		  
+		  JMenuItem mntmNewMenuItem = new JMenuItem("Cerrar Sesion");
+		  mntmNewMenuItem.addActionListener(new ActionListener() {
+		  	public void actionPerformed(ActionEvent e) {
+		  		Login login=new Login();
+		  		dispose();
+		  	}
+		  });
+		  mntmNewMenuItem.setSelected(true);
+		  mnNewMenu.add(mntmNewMenuItem);
+		  
 		JLabel lblUser = new JLabel("");
 		lblUser.setForeground(new Color(255, 255, 255));
 		lblUser.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblUser.setBounds(37, 22, 185, 50);
+		lblUser.setBounds(64, 22, 158, 50);
 		panel.add(lblUser);
 		lblUser.setText("     " + user);
+	    
+		
 		try {
 		    URL iconuser= new URL("https://i.imgur.com/Rvrv23r.png");
 		    ImageIcon IconPass = new ImageIcon(iconuser);
-		    lblUser.setIcon(IconPass);
-		    
+		    mnNewMenu.setIcon(IconPass);
 		    JLabel lblInventario = new JLabel("Inventario");
 		    lblInventario.addMouseListener(new MouseAdapter() {
 		    	@Override
@@ -115,6 +160,7 @@ public class Principal extends JFrame {
 		    ImageIcon IconOpciones=new ImageIcon(iconOpciones);
 		    lblOpciones.setIcon(IconOpciones);
 		    
+		
 		} catch (MalformedURLException ex) {
 		   
 		}
@@ -123,7 +169,7 @@ public class Principal extends JFrame {
 		panel_1.setBounds(232, 21, 1098, 697);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
-		Color gris=new Color(196,196,196);
+		
 		panel_1.setBackground(gris);
 		
 		JPanel panel_2 = new JPanel();
