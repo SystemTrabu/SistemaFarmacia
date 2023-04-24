@@ -7,7 +7,13 @@ import java.awt.EventQueue;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
@@ -23,6 +29,7 @@ import java.awt.PopupMenu;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JButton;
 
 public class Principal extends JFrame {
 	private JPanel panel_1 = new JPanel();
@@ -150,7 +157,7 @@ public class Principal extends JFrame {
 		 Reloj reloj = new Reloj();
 
 	     panel_1.add(reloj);
-	     reloj.setBounds(100,100,500,500);
+	     reloj.setBounds(415,49,500,500);
 		
 		
 	}
@@ -192,33 +199,27 @@ class Reloj extends Component {
         setSize(100, 50);
         setBackground(Color.WHITE);
 
-        // Crear un temporizador para actualizar el reloj cada segundo
         java.util.Timer timer = new java.util.Timer();
         timer.schedule(new RelojTimer(), 0, 1000);
     }
 
     public void paint(Graphics g) {
-    	Calendar calendario = Calendar.getInstance();
-        int hora = calendario.get(Calendar.HOUR);
-        int minuto = calendario.get(Calendar.MINUTE);
-        int segundo = calendario.get(Calendar.SECOND);
+    	LocalTime horaActual = LocalTime.now();
+        TimeZone zonaHoraria = TimeZone.getTimeZone("America/Mexico_City");
+        Calendar calendario = Calendar.getInstance(zonaHoraria);
+        calendario.set(Calendar.HOUR_OF_DAY, (horaActual.getHour()-1));
+        calendario.set(Calendar.MINUTE, horaActual.getMinute());
+        calendario.set(Calendar.SECOND, horaActual.getSecond());
         int am_pm = calendario.get(Calendar.AM_PM);
-
-    	  String amPm = am_pm == Calendar.AM ? "AM" : "PM";
-
-    
-          SimpleDateFormat formatoHora = new SimpleDateFormat("hh:mm:ss");
-
-          String horaString = formatoHora.format(calendario.getTime()) + " " + amPm;
-
-          g.setFont(new Font("Arial", Font.PLAIN, 30));
-          g.setColor(Color.BLUE);
-
-          FontMetrics fm = g.getFontMetrics();
-          int x = (getWidth() - fm.stringWidth(horaString)) / 2;
-          int y = (getHeight() + fm.getAscent() - fm.getDescent()) / 2;
-
-          g.drawString(horaString, x, y);
+        String amPm = am_pm == Calendar.AM ? "AM" : "PM";
+        SimpleDateFormat formatoHora = new SimpleDateFormat("hh:mm:ss");
+        String horaString = formatoHora.format(calendario.getTime()) + " " + amPm;
+        g.setFont(new Font("Arial", Font.PLAIN, 30));
+        g.setColor(Color.BLUE);
+        FontMetrics fm = g.getFontMetrics();
+        int x = (getWidth() - fm.stringWidth(horaString)) / 2;
+        int y = (getHeight() + fm.getAscent() - fm.getDescent()) / 2;
+        g.drawString(horaString, x, y);
     }
 
     class RelojTimer extends java.util.TimerTask {
