@@ -94,7 +94,7 @@ public class Principal extends JFrame {
 		JLabel lblUser = new JLabel("");
 		lblUser.setForeground(new Color(255, 255, 255));
 		lblUser.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblUser.setBounds(64, 22, 158, 50);
+		lblUser.setBounds(73, 30, 158, 50);
 		panel.add(lblUser);
 		lblUser.setText("     " + user);
 	    
@@ -121,6 +121,14 @@ public class Principal extends JFrame {
 		    lblInventario.setIcon(IconInventario);
 		    
 		    JLabel lblCaja = new JLabel("Caja");
+		    lblCaja.addMouseListener(new MouseAdapter() {
+		    	@Override
+		    	public void mouseClicked(MouseEvent arg0) {
+		    		Caja caja=new Caja();
+		    		CambiarPanel(caja);
+		    		
+		    	}
+		    });
 		    lblCaja.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		    lblCaja.setForeground(Color.WHITE);
 		    lblCaja.setBounds(37, 254, 162, 64);
