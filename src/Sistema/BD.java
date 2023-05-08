@@ -1,6 +1,7 @@
 package Sistema;
 import java.sql.*;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class BD {
@@ -23,6 +24,7 @@ public class BD {
 			System.out.println("Se pudo conectar");		
 		}
 		catch(SQLException e){
+			JOptionPane.showMessageDialog(null, "Error al conectarse, compruebe nuevamente o reinicie la aplicacion");
 			System.out.println("Fallo al conectarse");
 		}
 	}
@@ -52,8 +54,8 @@ public class BD {
 		    	esUser=true;
 		    
 		    }
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			
 		}
 
 		

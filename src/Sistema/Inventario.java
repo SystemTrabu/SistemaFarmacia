@@ -72,7 +72,6 @@ public class Inventario extends JPanel {
 		}
 		else{
 			btnBuscar.setBounds(815, 640, 89, 23);
-			
 			add(btnBuscar);
 
 		}
