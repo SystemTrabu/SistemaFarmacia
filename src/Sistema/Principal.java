@@ -159,6 +159,13 @@ public class Principal extends JFrame {
 		    lblMovimientos.setIcon(IconMovi);
 		    
 		    JLabel lblOpciones = new JLabel("Opciones");
+		    lblOpciones.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					panelOpciones opciones=new panelOpciones();
+					CambiarPanel(opciones);
+				}
+			});
 		    lblOpciones.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		    lblOpciones.setForeground(Color.WHITE);
 		    lblOpciones.setBounds(37, 600, 162, 64);
