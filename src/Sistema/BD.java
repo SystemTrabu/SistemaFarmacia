@@ -1,5 +1,7 @@
 package Sistema;
+import java.security.SecureRandom;
 import java.sql.*;
+import java.util.Base64;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -34,7 +36,7 @@ public class BD {
 			conexion.close();
 			System.out.println("Cerro la conexion");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}
@@ -98,7 +100,7 @@ public class BD {
 			e.printStackTrace();
 		}
 		desconectarBD();
-
+		
 		return nivel;
 	}
 	
@@ -109,7 +111,7 @@ public class BD {
 		 Statement stm = conexion.createStatement();
          ResultSet rs = stm.executeQuery("SELECT * FROM inventario");
          while (rs.next()) {
-         int id = rs.getInt("ID");
+        String id = rs.getString("ID");
          int cantidad=rs.getInt("Cantidad");
          String nombre_medi = rs.getString("Nombre_Medicamento");
          float Precio = rs.getFloat("Precio");
@@ -124,18 +126,138 @@ public class BD {
 		return model ;
 	}
 	
-	public void agregarInventario(String Nombre, int ID, float Precio, int cantidad, String proovedor ) throws SQLException{
+	public void AgregarEmpleado(String nombre, String a_p, String a_m, String telef, String direccion){
+		
+		conectarBD();
+		
+		String sql="INSERT INTO empleados(Nombre,Apellido_P, Apellido_M, Telefono, Direccion) VALUES(?,?,?,?,?)";
+        PreparedStatement sentencia = null;
+        
+        try {
+			sentencia=conexion.prepareStatement(sql);
+			
+			sentencia.setString(1, nombre);
+			sentencia.setString(2, a_p);
+			sentencia.setString(3, a_m);
+			sentencia.setString(4, telef);
+			sentencia.setString(5, direccion);
+			 int filasAfectadas = sentencia.executeUpdate();
+			 if(filasAfectadas>0){
+				 JOptionPane.showMessageDialog(null, "Se agregaron los datos correctamente");
+			 }
+			 else{
+				 JOptionPane.showMessageDialog(null, "Hubo un error al ingresar los datos");
+				 
+			 }
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		desconectarBD();
+		
+		
+	}
+	
+	public void crearUser(String nombre ,String apellido, boolean admi){
+		conectarBD();
+		String User=nombre.replaceAll(" ", "");
+		String sql="SELECT*FROM users WHERE user=?";
+		PreparedStatement sentencia=null;
+		ResultSet result=null;
+		int nivel=1;
+		boolean existe=false;
+		try {
+			sentencia=conexion.prepareStatement(sql);
+			sentencia.setString(1, User);
+			System.out.println(User + " aaaaaaaaaaaaaaa");
+
+			result=sentencia.executeQuery();
+			
+			
+			if(result.next()){
+				existe=true;
+				System.out.println(User);
+			}
+			
+			if(existe==true){
+				
+				
+				int posicionEspacio = nombre.indexOf(" ");
+				sentencia=null;
+				String nombreCambiado=nombre.substring(0, posicionEspacio);
+				
+				posicionEspacio=apellido.indexOf(" ");
+				
+				String apellidoCambiado=apellido.substring(0, posicionEspacio);
+				
+				User=nombreCambiado + apellidoCambiado;
+				int LONGITUD_CONTRASENA = 10;
+				SecureRandom random = new SecureRandom();
+		        byte[] bytes = new byte[LONGITUD_CONTRASENA];
+		        random.nextBytes(bytes);
+		        String contrasena = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+				
+		        if(admi==true)nivel=2;
+				sql="INSERT INTO users(user, Nombre_User, password,nivel) VALUES(?,?,?,?)";
+				sentencia=conexion.prepareStatement(sql);
+				sentencia.setString(1, User);
+				sentencia.setString(2, nombre);
+				sentencia.setString(3, contrasena);
+				sentencia.setInt(4, nivel);	
+			    sentencia.executeUpdate();
+			    JOptionPane.showMessageDialog(null, "User: " + User + ""
+		         		+ "\nContraseña: " + contrasena);
+			
+
+			}
+			else{
+				int LONGITUD_CONTRASENA = 10;
+				SecureRandom random = new SecureRandom();
+		        byte[] bytes = new byte[LONGITUD_CONTRASENA];
+		        random.nextBytes(bytes);
+		        String contrasena = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+				
+		        if(admi==true)nivel=2;
+		        
+		       
+				sql="INSERT INTO users(user,Nombre_User, password,nivel) VALUES(?,?,?,?)";
+				sentencia=null;
+				sentencia=conexion.prepareStatement(sql);
+				sentencia.setString(1, User);
+				sentencia.setString(2, nombre);
+				sentencia.setString(3, contrasena);
+				sentencia.setInt(4, nivel);	
+				
+				
+		        sentencia.executeUpdate();
+		         JOptionPane.showMessageDialog(null, "User: " + User + ""
+		         		+ "\nContraseña: " + contrasena);
+
+		         
+			}
+			
+		} catch (Exception uwu) {
+			
+			System.out.println(uwu);
+			
+		}
+		
+		desconectarBD();
+		
+	}
+	public void agregarInventario(String Nombre, String ID, float Precio, int cantidad, String proovedor ) throws SQLException{
 		
 		conectarBD();
 		 String sql = "INSERT INTO inventario (Nombre_Medicamento, ID, Cantidad, Precio, Proveedor) VALUES (?, ?, ?,?,?)";
 	        PreparedStatement sentencia = null;
 
-   
          sentencia = conexion.prepareStatement(sql);
 
    
          sentencia.setString(1, Nombre);
-         sentencia.setInt(2, ID);
+         sentencia.setString(2, ID);
          sentencia.setInt(3, cantidad);
          sentencia.setFloat(4, Precio);
          sentencia.setString(5, proovedor);
@@ -153,4 +275,61 @@ public class BD {
          
 		
 	}
+public DefaultTableModel tablaMovimientos() throws SQLException{
+		
+		
+		conectarBD();
+		 DefaultTableModel model=new DefaultTableModel(new Object[]{"Nombre", "ID", "Empleado", "Movimientos", "Fecha"}, 0);
+		 Statement stm = conexion.createStatement();
+         ResultSet rs = stm.executeQuery("SELECT * FROM movimientos");
+         while (rs.next()) {
+        
+         String Nombre=rs.getString("Nombre");	 
+         String id = rs.getString("ID");
+         String Empleado=rs.getString("Empleado");
+         String Movimiento= rs.getString("Movimiento");
+         Date fecha=rs.getDate("Fecha");
+         
+         
+         
+        
+        Object []  obj={Nombre,id, Empleado,Movimiento ,fecha.toString()};
+        
+        model.addRow(obj);
+			}
+         
+         desconectarBD();
+		return model ;
+	}
+public void insertarMovimientos(String nombre, String id, String movimiento) throws SQLException{
+	conectarBD();
+	
+	String sql = "INSERT INTO movimientos (Nombre, ID, Empleado, Movimiento, Fecha) VALUES (?,?,?,?,?)";
+    PreparedStatement sentencia = null;
+
+    sentencia = conexion.prepareStatement(sql);
+    
+    String Empleado=darNombre();
+    java.sql.Date fecha=new java.sql.Date(new java.util.Date().getTime());
+
+    sentencia.setString(1, nombre);
+    sentencia.setString(2, id);
+    sentencia.setString(3, Empleado);
+    sentencia.setString(4, movimiento);
+    sentencia.setDate(5,fecha);
+
+    int filasAfectadas = sentencia.executeUpdate();
+
+    
+    if (filasAfectadas > 0) {
+        System.out.println("Datos agregados correctamente a la tablaaaaaaaaaaaaaaaaaa.");
+    } else {
+        System.out.println("No se pudo agregar los datos a la tablaaaaaaaaaaaa.");
+    }
+	desconectarBD();
+	
+	
+}
+	
+
 }

@@ -149,6 +149,13 @@ public class Principal extends JFrame {
 		    lblVentas.setIcon(IconVentas);
 		    
 		    JLabel lblMovimientos = new JLabel("Movimientos");
+		    lblMovimientos.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					Movimientos movimientos=new Movimientos();
+					CambiarPanel(movimientos);
+				}
+			});
 		    lblMovimientos.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		    lblMovimientos.setForeground(Color.WHITE);
 		    lblMovimientos.setBounds(37, 489, 185, 58);

@@ -128,12 +128,15 @@ public class Inventario extends JPanel {
 					boolean existe=revisarID();
 					if(existe==false){
 					try {
-						int ID=Integer.parseInt(txtID.getText());
+						
 						float Precio=Float.parseFloat(txtPrecio.getText());
 						int cantidad=Integer.parseInt(txtCant.getText());
-						bd.agregarInventario(txtNombre.getText(), ID, Precio, cantidad, cboxProo.getSelectedItem().toString());
+						bd.agregarInventario(txtNombre.getText(), txtID.getText(), Precio, cantidad, cboxProo.getSelectedItem().toString());
+					
 						model=bd.tablaInventario();
+						bd.insertarMovimientos(txtNombre.getText(), txtID.getText(), "Entrada");
 						table.setModel(model);
+						txtNombre.setText("");
 						txtID.setText("");
 						txtPrecio.setText("");
 						txtCant.setText("");
@@ -143,6 +146,7 @@ public class Inventario extends JPanel {
 						
 						JOptionPane.showMessageDialog(null, "Error, ingrese los datos nuevamente....");
 						txtID.setText("");
+						txtNombre.setText("");
 						txtPrecio.setText("");
 						txtCant.setText("");
 						
@@ -152,6 +156,7 @@ public class Inventario extends JPanel {
 					else{
 						JOptionPane.showMessageDialog(null, "El ID " +  txtID.getText() + " ya existe");
 						txtID.setText("");
+						txtNombre.setText("");
 						txtPrecio.setText("");
 						txtCant.setText("");
 					}
