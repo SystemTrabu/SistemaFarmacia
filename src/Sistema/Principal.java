@@ -256,12 +256,19 @@ public class Principal extends JFrame {
 		
 		
 	}
+	
+	
 public void CambiarPanel(JPanel newPanel){
-	panel_1.removeAll();
-	panel_1.add(newPanel);
-	panel_1.repaint();
-	panel_1.revalidate();
+	
+	//METODO PARA CAMBIAR EL PANEL DEPENDIENDOD DE LO QUE SE SELECCIONE (INVENTARIO, MOVIMIENTOS, CAJA, ETC)
+	
+	panel_1.removeAll(); //ELIMINA EL PANEL ACTUAL
+	panel_1.add(newPanel); //agrega el nuevo panel
+	panel_1.repaint(); // REPINTA TODO CON EL NUEVO PANEL
+	panel_1.revalidate(); //REVALIDA QUE SEA CORRECTO PARA MOSTRARLO
 }
+
+//ESTA CLASE LO QUE HACE ES CREAR UN RELOJ, TODAVIA ESTA POR MODIFICARSE PARA VERSE MEJOR
 class Reloj extends Component {
     public Reloj() {
         setSize(100, 50);

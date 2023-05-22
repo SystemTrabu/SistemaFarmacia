@@ -56,6 +56,7 @@ public class Inventario extends JPanel {
 		
 		try {
 			model=bd.tablaInventario();
+		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -201,6 +202,8 @@ public class Inventario extends JPanel {
 	}
 	
 	public void objAdmi(){
+		
+		//ESTE METODO SOLO ESTA PARA MOSTRAR COSAS QUE SOLO EL ADMINISTRADOR VE
 	
 		btnEliminar.setBounds(731, 637, 89, 23);
 		add(btnEliminar);
@@ -210,6 +213,8 @@ public class Inventario extends JPanel {
 	}
 	
 	public boolean revisarID(){
+		
+		//ESTE METODO SE ENCARGA DE VERIFICAR EL ID PARA CHECAR SI EXISTE O NO
 		boolean existe=false;
 		
 		int numFilas=model.getRowCount();
@@ -225,7 +230,10 @@ public class Inventario extends JPanel {
 		return existe;
 	}
 	
+	
 	public void buscar(){
+		
+		//ESTE METODO SE ENCARGA DE BUSCAR ADENTRO DE LA TABLA SI UN PRODUCTO EXISTE
 		boolean v=false;
 		int numFilas=model.getRowCount();
     	String nombre="", ID="", Cantidad="", Precio="", Proovedor="";

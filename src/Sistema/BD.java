@@ -10,14 +10,20 @@ public class BD {
 	private static String user;
 	private static String Nombre;
 	private static int nivel;
+	private static DefaultTableModel modelCaja=new DefaultTableModel(new Object[]{"Nombre", "ID", "Cantidad", "Precio"}, 0);
+
 	public BD(){
 		
 	}
-	
+
  	private Connection conexion=null;
  	private Statement stm=null;
 	
 	public void conectarBD(){
+		
+		//METODO QUE CONECTA LA BD
+		
+		
 		String url="jdbc:mysql://localhost:3306/bd_farmacia";
 		String user="root";
 		 String password="";
@@ -32,6 +38,8 @@ public class BD {
 	}
 	
 	public void desconectarBD(){
+		
+		//METODO QUE DESCONECTA LA BD
 		  try {
 			conexion.close();
 			System.out.println("Cerro la conexion");
@@ -44,6 +52,8 @@ public class BD {
 	
 	
 	public boolean buscarUser(String user, String password){
+		//METODO QUE BUSCA Y VERIFICA SI EL USUARIO Y CONTRASEÑA ES CORRECTA, SE USA EN EL LOGIN
+		
 		this.user=user;
 		boolean esUser=false;
 		 try {
@@ -67,6 +77,9 @@ public class BD {
 	}
 	
 	public String darNombre(){
+		
+		//METODO QUE ME DEVUELVE EL NOMBRE DEL USUARIO QUE TIENE INCIADA LA SESION PARA MOSTRARLO EN LA INTERFAZ GRAFICA
+		 
 		conectarBD();
 		
 		try {
@@ -86,6 +99,7 @@ public class BD {
 	}
 	
 	public int darNivel(){
+		//METODO QUE ME DEVUELVE EL NIVEL (1=USUARIO NORMAL, 2=ADMINISTRADOR) PARA DESPUES VERIFICAR Y MOSTRAR COSAS DE ADMINISTRADOR O USUARIO NORMAL
 		conectarBD();
 
 		try {
@@ -106,6 +120,7 @@ public class BD {
 	
 	public DefaultTableModel tablaInventario() throws SQLException{
 		
+		//METODO QUE DEVUELVE UN MODELO DE UN JTABLE QUE AGARRA LOS DATOS DE LA BASE DE DATOS PARA DESPUES MOSTRARLO EN LA INTERFAZ
 		conectarBD();
 		 DefaultTableModel model=new DefaultTableModel(new Object[]{"Nombre", "ID", "Precio", "Cantidad", "Proovedor"}, 0);
 		 Statement stm = conexion.createStatement();
@@ -127,6 +142,8 @@ public class BD {
 	}
 	
 	public void AgregarEmpleado(String nombre, String a_p, String a_m, String telef, String direccion){
+		
+		//METODO QUE SE USA PARA RECIBIR LOS DATOS DE UN NUEVO EMPLEADO Y GUARDARLO EN LA BASE DE DATOS
 		
 		conectarBD();
 		
@@ -161,6 +178,8 @@ public class BD {
 	}
 	
 	public void crearUser(String nombre ,String apellido, boolean admi){
+		
+		// METODO QUE CREA USUARIOS DE FORMA AUTOMATICA CUANDO SE REGISTRA UN NUEVO EMPLEADO, AL FINAL TE MUESTRA EL USUARIO Y CONTRASEÑA
 		conectarBD();
 		String User=nombre.replaceAll(" ", "");
 		String sql="SELECT*FROM users WHERE user=?";
@@ -249,6 +268,8 @@ public class BD {
 	}
 	public void agregarInventario(String Nombre, String ID, float Precio, int cantidad, String proovedor ) throws SQLException{
 		
+		//METODO QUE RECIBE LOS DATOS QUE SE METEN EN LA INTERFAZ PARA GUARDARLO EN LA BASE DE DATOS
+		
 		conectarBD();
 		 String sql = "INSERT INTO inventario (Nombre_Medicamento, ID, Cantidad, Precio, Proveedor) VALUES (?, ?, ?,?,?)";
 	        PreparedStatement sentencia = null;
@@ -275,8 +296,12 @@ public class BD {
          
 		
 	}
+	
+	
+	// ----------------------- MOVIMIENTOS------------------------------------------------
 public DefaultTableModel tablaMovimientos() throws SQLException{
 		
+	//METODO QUE DEVUELVE UN MODELO DE UN JTABLE QUE AGARRA LOS DATOS DE UNA TABLA DE BD, PARA POSTERIORMENTE MOSTRARLA EN LA INTERFAZ GRAFICA
 		
 		conectarBD();
 		 DefaultTableModel model=new DefaultTableModel(new Object[]{"Nombre", "ID", "Empleado", "Movimientos", "Fecha"}, 0);
@@ -301,8 +326,14 @@ public DefaultTableModel tablaMovimientos() throws SQLException{
          desconectarBD();
 		return model ;
 	}
+
+
 public void insertarMovimientos(String nombre, String id, String movimiento) throws SQLException{
+	
+	//METODO QUE GUARDA LA INFORMACION SOBRE LAS ENTRADAS Y SALIDAS DE LOS PRODUCTOS EN LA BASE DE DATOS
 	conectarBD();
+	
+	
 	
 	String sql = "INSERT INTO movimientos (Nombre, ID, Empleado, Movimiento, Fecha) VALUES (?,?,?,?,?)";
     PreparedStatement sentencia = null;
@@ -329,6 +360,61 @@ public void insertarMovimientos(String nombre, String id, String movimiento) thr
 	desconectarBD();
 	
 	
+}
+
+
+// ---------------------------------------------- CAJA-------------------------------------------------------------------
+public void agregarCaja(String producto, int cantidad){
+	conectarBD();
+	boolean suficiente=false;
+	boolean band=false;
+	
+	
+	String sql = "SELECT Nombre_Medicamento,ID,Precio FROM inventario where Nombre_Medicamento=? or ID=?";
+    PreparedStatement sentencia = null;
+    
+	try {
+		
+		
+	    sentencia = conexion.prepareStatement(sql);
+	    sentencia.setString(1, producto);
+	    sentencia.setString(2, producto);
+	   
+		ResultSet rs=sentencia.executeQuery();
+	
+		while(rs.next()){
+			
+			
+			
+			
+			
+			
+			
+			
+			band=true;
+			String nombre=rs.getString("Nombre_Medicamento");
+			int ID=rs.getInt("ID");
+			Float Precio=rs.getFloat("Precio");
+			Object [] obj={nombre, ID, cantidad, Precio};
+			modelCaja.addRow(obj);
+		}
+	} catch (SQLException e) {
+	
+		e.printStackTrace();
+	}
+	
+	
+	
+	if(band==true)JOptionPane.showMessageDialog(null, "Producto agregado correctamente");
+	else JOptionPane.showMessageDialog(null, "No se pudo agregar el producto");
+	
+	
+	desconectarBD();
+	
+}
+
+public DefaultTableModel returnModel(){
+	return modelCaja;
 }
 	
 
