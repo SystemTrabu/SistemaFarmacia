@@ -17,10 +17,12 @@ public class panelOpciones extends JPanel {
 		setLayout(null);
 		Color gris=new Color(196,196,196);
 		setBackground(gris);
+		
+		
 		nivel=bd.darNivel();
 		
 		if(nivel==2){
-		JButton btnNuevoEmpleado = new JButton("Nuevo Empleado");
+		JButton btnNuevoEmpleado = new JButton("Empleados");
 		btnNuevoEmpleado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				newEmpleado panel=new newEmpleado();
@@ -29,15 +31,33 @@ public class panelOpciones extends JPanel {
 			}
 			);
 		
-		btnNuevoEmpleado.setBounds(54, 100, 161, 23);
+		btnNuevoEmpleado.setBounds(54, 100,  176, 23);
 		add(btnNuevoEmpleado);
 		
-		JButton btnNewProo = new JButton("Nuevo Proovedor");
+		JButton btnNewProo = new JButton("Proovedores");
 	
-		btnNewProo.setBounds(54, 300, 161, 23);
+		btnNewProo.setBounds(54, 300,  176, 23);
 		add(btnNewProo);
+		
+		btnNewProo.addActionListener(new ActionListener(){
+
+		
+			public void actionPerformed(ActionEvent arg0) {
+				newProovedor proovedor=new newProovedor();
+				CambiarPanel(proovedor);
+				
+			}
+			
+		});
 		JButton btnOpciones = new JButton("Opciones de perfil");
-		btnOpciones.setBounds(54, 500, 161, 23);
+		btnOpciones.setBounds(54, 500,  176, 23);
+		JButton btnEliminarEmpleado = new JButton("Eliminar Empleado");
+		btnEliminarEmpleado.setBounds(51, 177, 176, 23);
+		add(btnEliminarEmpleado);
+		
+		JButton btnEliminarProovedor = new JButton("Eliminar Proovedor");
+		btnEliminarProovedor.setBounds(51, 383, 176, 23);
+		add(btnEliminarProovedor);
 		add(btnOpciones);
 		panel.setBounds(365, 11, 723, 675);
 		add(panel);

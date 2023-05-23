@@ -29,7 +29,6 @@ public class Caja extends JPanel {
 		this.setBounds(1, 1,1098, 697);
 		Color gris=new Color(196,196,196);
 		setBackground(gris);
-		
 		txtNom = new JTextField();
 		txtNom.setBounds(172, 105, 251, 20);
 		add(txtNom);
@@ -90,8 +89,12 @@ public class Caja extends JPanel {
 		JButton btnTotal = new JButton("Terminar Venta");
 		btnTotal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				
+					if(table.getRowCount()>0){
+						bd.TerminarVenta();
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "No hay nada en Caja...");
+					}
 			}
 		});
 		btnTotal.setBounds(890, 601, 151, 23);

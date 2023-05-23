@@ -8,6 +8,9 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class newEmpleado extends JPanel {
 	
@@ -19,6 +22,7 @@ public class newEmpleado extends JPanel {
 	private JTextField txtDireccion;
 
 	private JCheckBox chckbxPermisosDeAdministrador = new JCheckBox("Permisos de Administrador");
+	private JTable table;
 
 	public newEmpleado() {
 		setBounds(0, 0, 723, 675);
@@ -27,7 +31,7 @@ public class newEmpleado extends JPanel {
 		setLayout(null);
 		
 		txtNombre = new JTextField();
-		txtNombre.setBounds(274, 47, 204, 20);
+		txtNombre.setBounds(222, 47, 173, 20);
 		add(txtNombre);
 		txtNombre.setColumns(10);
 		
@@ -41,7 +45,7 @@ public class newEmpleado extends JPanel {
 		
 		txtA_P = new JTextField();
 		txtA_P.setColumns(10);
-		txtA_P.setBounds(274, 135, 204, 20);
+		txtA_P.setBounds(222, 135, 173, 20);
 		add(txtA_P);
 		
 		JLabel lblApellidoMaterno = new JLabel("Apellido Materno");
@@ -50,7 +54,7 @@ public class newEmpleado extends JPanel {
 		
 		txtA_M = new JTextField();
 		txtA_M.setColumns(10);
-		txtA_M.setBounds(274, 221, 204, 20);
+		txtA_M.setBounds(222, 221, 173, 20);
 		add(txtA_M);
 		
 		JLabel lblTelefono = new JLabel("Telefono");
@@ -59,7 +63,7 @@ public class newEmpleado extends JPanel {
 		
 		txtTelefono = new JTextField();
 		txtTelefono.setColumns(10);
-		txtTelefono.setBounds(274, 313, 204, 20);
+		txtTelefono.setBounds(222, 313, 173, 20);
 		add(txtTelefono);
 		
 		JLabel lblDireccion = new JLabel("Direccion");
@@ -68,7 +72,7 @@ public class newEmpleado extends JPanel {
 		
 		txtDireccion = new JTextField();
 		txtDireccion.setColumns(10);
-		txtDireccion.setBounds(274, 414, 309, 20);
+		txtDireccion.setBounds(222, 414, 173, 20);
 		add(txtDireccion);
 		
 		JButton btnAgregar = new JButton("Agregar");
@@ -99,11 +103,25 @@ public class newEmpleado extends JPanel {
 				}
 			}
 		});
-		btnAgregar.setBounds(254, 534, 204, 23);
+		btnAgregar.setBounds(172, 536, 204, 23);
 		add(btnAgregar);
 		
-		chckbxPermisosDeAdministrador.setBounds(254, 473, 211, 23);
+		chckbxPermisosDeAdministrador.setBounds(172, 472, 211, 23);
 		add(chckbxPermisosDeAdministrador);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(425, 47, 288, 458);
+		add(scrollPane);
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Nombre", "Apellido", "Numero"
+			}
+		));
+		scrollPane.setViewportView(table);
 		
 		
 		

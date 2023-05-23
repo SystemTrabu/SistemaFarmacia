@@ -23,7 +23,7 @@ public class Movimientos extends JPanel {
 		setBackground(gris);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(596, 37, 445, 457);
+		scrollPane.setBounds(378, 43, 445, 457);
 		add(scrollPane);
 		
 		table = new JTable();
@@ -31,14 +31,13 @@ public class Movimientos extends JPanel {
 			new Object[][] {
 			},
 			new String[] {
-				"Nombre", "ID", "Empleado", "Movimiento", "Fecha"
+				"Nombre", "ID", "Empleado", "Movimiento", "Cantidad", "Fecha"
 			}
 		));
 		scrollPane.setViewportView(table);
 		try {
 			model=bd.tablaMovimientos();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

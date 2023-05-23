@@ -279,6 +279,7 @@ class Reloj extends Component {
     }
 
     public void paint(Graphics g) {
+    	
     	LocalTime horaActual = LocalTime.now();
         TimeZone zonaHoraria = TimeZone.getTimeZone("America/Mexico_City");
         Calendar calendario = Calendar.getInstance(zonaHoraria);

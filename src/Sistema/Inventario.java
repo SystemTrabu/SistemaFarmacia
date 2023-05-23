@@ -135,7 +135,7 @@ public class Inventario extends JPanel {
 						bd.agregarInventario(txtNombre.getText(), txtID.getText(), Precio, cantidad, cboxProo.getSelectedItem().toString());
 					
 						model=bd.tablaInventario();
-						bd.insertarMovimientos(txtNombre.getText(), txtID.getText(), "Entrada");
+						bd.insertarMovimientos(txtNombre.getText(), txtID.getText(), "Entrada", Integer.parseInt(txtCant.getText()));
 						table.setModel(model);
 						txtNombre.setText("");
 						txtID.setText("");
@@ -209,6 +209,24 @@ public class Inventario extends JPanel {
 		add(btnEliminar);
 		btnBuscar.setBounds(894, 637, 89, 23);
 		add(btnBuscar);
+		btnEliminar.addActionListener(new ActionListener(){
+
+		
+			public void actionPerformed(ActionEvent arg0) {
+
+				bd.EliminarProducto(txtBuscar.getText());
+				try {
+					model=bd.tablaInventario();
+					table.setModel(model);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			
+			}
+			
+		});
 
 	}
 	
