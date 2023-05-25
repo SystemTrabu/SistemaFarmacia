@@ -97,6 +97,12 @@ public class Principal extends JFrame {
 		lblUser.setBounds(73, 30, 158, 50);
 		panel.add(lblUser);
 		lblUser.setText("     " + user);
+		
+		lblUser.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				CambiarPanel(panel_1);
+			}
+		});
 	    
 		
 		try {
@@ -142,6 +148,14 @@ public class Principal extends JFrame {
 		    lblVentas.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		    lblVentas.setForeground(Color.WHITE);
 		    lblVentas.setBounds(37, 376, 170, 64);
+		    lblVentas.addMouseListener(new MouseAdapter(){
+		    	public void mouseClicked(MouseEvent arg0){
+		    		
+		    		Ventas ventas=new Ventas();
+		    		CambiarPanel(ventas);
+		    		
+		    	}
+		    });
 		    panel.add(lblVentas);
 		    
 		    URL iconVentas=new URL("https://i.imgur.com/rkgzqdJ.png");

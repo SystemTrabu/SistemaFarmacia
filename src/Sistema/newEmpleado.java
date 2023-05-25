@@ -95,6 +95,8 @@ public class newEmpleado extends JPanel {
 						txtDireccion.setText("");
 						
 						bd.crearUser(nombre, a_p,chckbxPermisosDeAdministrador.isSelected());
+						
+						table.setModel(bd.modelEmpleado());
 					}
 					catch(Exception uwu){
 						System.out.println(uwu);
@@ -118,10 +120,12 @@ public class newEmpleado extends JPanel {
 			new Object[][] {
 			},
 			new String[] {
-				"Nombre", "Apellido", "Numero"
+				"ID", "Nombre", "Telefono"
 			}
 		));
 		scrollPane.setViewportView(table);
+		
+		table.setModel(bd.modelEmpleado());
 		
 		
 		

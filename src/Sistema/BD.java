@@ -410,7 +410,7 @@ public void agregarCaja(String producto, int cantidad){
 
 	
 	
-	String sql = "SELECT Nombre_Medicamento,ID,Precio, Activo, Cantidad FROM inventario where Nombre_Medicamento=? or ID=? and Activo='S'";
+	String sql = "SELECT Nombre_Medicamento,ID,Precio, Activo, Cantidad FROM inventario where (Nombre_Medicamento=? or ID=?) and Activo='S'";
     PreparedStatement sentencia = null;
     
 	try {
@@ -467,7 +467,7 @@ conectarBD();
 	
 	
 	
-	String sql = "UPDATE inventario SET Activo='N' WHERE ID=? or Nombre_Medicamento=?" ;
+	String sql = "UPDATE inventario SET Activo='N' WHERE (ID=? or Nombre_Medicamento=?) and Activo='S'" ;
     PreparedStatement sentencia = null;
     
     try {
@@ -548,13 +548,42 @@ conectarBD();
 			    
 				 insertarMovimientos(nombreP, idp, "Salida", (int)modelCaja.getValueAt(x,2 ));
 				 
+				
+				 
+				 
+				 sql="INSERT INTO ventas(Producto, ID, Cantidad, Total)VALUES(?,?,?,?)";
+				 conectarBD();
+				 sentencia=conexion.prepareStatement(sql);
+				 sentencia.setString(1, modelCaja.getValueAt(x, 0).toString());
+				 sentencia.setString(2, modelCaja.getValueAt(x, 1).toString());
+				 sentencia.setInt(3, Integer.parseInt(modelCaja.getValueAt(x, 2).toString()));
+				 sentencia.setFloat(4, (Float.parseFloat(modelCaja.getValueAt(x, 3).toString())*Float.parseFloat(modelCaja.getValueAt(x, 2).toString())));
+				 
+				 System.out.println(modelCaja.getValueAt(x, 0).toString());
+				 System.out.println(modelCaja.getValueAt(x, 1).toString());
+
+				 System.out.println(modelCaja.getValueAt(x, 2).toString());
+				 System.out.println(modelCaja.getValueAt(x, 3).toString());
+				 
+				 sentencia.executeUpdate();
+
+
+				 
+				 
 				 modelCaja.setRowCount(0);
+				 
+				 
+				 
+				 
+				 
+				 
 			    
 			}
 						
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
+			
 		}
 		
 		}
@@ -570,9 +599,152 @@ conectarBD();
 	
 	
 	public void AgregarProovedor(String nombre, String ID, String farmaceutica, String Num_Telef){
+		conectarBD();
+		String sql = "INSERT INTO  proovedores (Nombre, ID, Farmaceutica, Num_Telef, Activo) VALUES (?,?,?,?,?)";
+	    PreparedStatement sentencia = null;
+
+	    try {
+			sentencia = conexion.prepareStatement(sql);
+			sentencia.setString(1, nombre);
+			sentencia.setString(2, ID);
+			sentencia.setString(3, farmaceutica);
+			sentencia.setString(4, Num_Telef);
+			sentencia.setString(5, "S");
+			sentencia.executeUpdate();
+			
+			
+			
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+	    
+	    desconectarBD();
 		
 		
 		
 	}
+	
+	public DefaultTableModel modelProovedor(){
+		conectarBD();
+		DefaultTableModel model=new DefaultTableModel(new Object[]{"ID", "Nombre", "Telefono"}, 0);
+	         
+		try{
+			Statement stm = conexion.createStatement();
+	         ResultSet rs = stm.executeQuery("SELECT * FROM proovedores WHERE Activo='S");
+	         while (rs.next()) {
+	        
+	         String Nombre=rs.getString("Nombre");	 
+	         String ID = rs.getString("ID");
+	         String num_telef=rs.getString("Num_Telef");	        
+	         Object []  obj={ID,Nombre, num_telef};
+	        
+	         model.addRow(obj);
+	    
+				}
+	         
+	        
+		}
+		catch(Exception uwu){
+			
+		}
+		
+		desconectarBD();
+		
+		return model;
+	}
 
+	public DefaultTableModel modelEmpleado(){
+		
+		conectarBD();
+		DefaultTableModel model=new DefaultTableModel(new Object[]{"ID", "Nombre", "Telefono"}, 0);
+	         
+		try{
+			Statement stm = conexion.createStatement();
+	         ResultSet rs = stm.executeQuery("SELECT * FROM empleados WHERE Activo='S'");
+	         while (rs.next()) {
+	        
+	         String ID=rs.getString("ID");	 
+	         String Nombre = rs.getString("Nombre");
+	         String num_telef=rs.getString("Telefono");	        
+	         Object []  obj={ID,Nombre, num_telef};
+	        
+	        model.addRow(obj);
+	    
+				}
+	         
+	        
+		}
+		catch(Exception uwu){
+			
+		}
+		
+		desconectarBD();
+		
+		return model;
+	}
+	
+	public void Delete(String nombreTabla,String ID){
+		conectarBD();
+		
+		
+		
+		String sql = "UPDATE "+ nombreTabla+ " SET Activo='N' WHERE ID=?  and Activo='S'" ;
+	    PreparedStatement sentencia = null;
+	    
+	    try {
+			sentencia=conexion.prepareStatement(sql);
+			sentencia.setString(1, ID);
+			
+			
+			int filas=sentencia.executeUpdate();
+			
+			if(filas>0){
+				JOptionPane.showMessageDialog(null, "Se borro correctamente");
+			}
+			else{
+				JOptionPane.showMessageDialog(null, "Error, no existe");
+			}
+			
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
+		
+		desconectarBD();
+		
+		
+	}
+	
+	
+	public DefaultTableModel modelVentas(){
+		conectarBD();
+		DefaultTableModel model=new DefaultTableModel(new Object[]{"Producto", "ID", "Cantidad", "Total"}, 0);
+	         
+		try{
+			Statement stm = conexion.createStatement();
+	         ResultSet rs = stm.executeQuery("SELECT * FROM ventas");
+	         while (rs.next()) {
+	        
+	         String ID=rs.getString("ID");	 
+	         String Nombre = rs.getString("Producto");
+	         int cantidad=rs.getInt("Cantidad");
+	         float total=rs.getFloat("Total");	        
+	         Object []  obj={Nombre,ID, cantidad,total};
+	        
+	        model.addRow(obj);
+	    
+				}
+	         
+	        
+		}
+		catch(Exception uwu){
+			
+		}
+		
+		desconectarBD();
+		return model;
+	}
+	
 }

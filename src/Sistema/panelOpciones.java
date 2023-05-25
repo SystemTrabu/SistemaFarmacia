@@ -51,12 +51,43 @@ public class panelOpciones extends JPanel {
 		});
 		JButton btnOpciones = new JButton("Opciones de perfil");
 		btnOpciones.setBounds(54, 500,  176, 23);
+		btnOpciones.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				
+				OpcPerfil opcion=new OpcPerfil();
+				
+				CambiarPanel(opcion);
+				
+				
+			}
+			
+		});
 		JButton btnEliminarEmpleado = new JButton("Eliminar Empleado");
+		
+		btnEliminarEmpleado.addActionListener(new ActionListener(){
+
+			
+			public void actionPerformed(ActionEvent e) {
+				deleteEmpleado delete=new deleteEmpleado();
+				CambiarPanel(delete);
+			}
+			
+		});
 		btnEliminarEmpleado.setBounds(51, 177, 176, 23);
 		add(btnEliminarEmpleado);
 		
+		
 		JButton btnEliminarProovedor = new JButton("Eliminar Proovedor");
 		btnEliminarProovedor.setBounds(51, 383, 176, 23);
+btnEliminarProovedor.addActionListener(new ActionListener(){
+
+			
+			public void actionPerformed(ActionEvent e) {
+				deleteProovedor delete=new deleteProovedor();
+				CambiarPanel(delete);
+			}
+			
+		});
 		add(btnEliminarProovedor);
 		add(btnOpciones);
 		panel.setBounds(365, 11, 723, 675);

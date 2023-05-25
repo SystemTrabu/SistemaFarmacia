@@ -15,13 +15,14 @@ import java.awt.event.ActionEvent;
 public class newProovedor extends JPanel {
 	private JTextField txtNombre;
 	private JTextField txtNum;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField txtFarma;
+	private JTextField txtID;
 	private JTable table;
-
+	private DefaultTableModel model=null;
 	private BD bd=new BD();
 
 	public newProovedor() {
+		model=bd.modelProovedor();
 		this.setBounds(0,0 ,723, 675);
 		Color gris=new Color(196,196,196);
 		setBackground(gris);
@@ -49,25 +50,26 @@ public class newProovedor extends JPanel {
 		lblFarmaceutica.setBounds(13, 213, 135, 14);
 		add(lblFarmaceutica);
 		
-		textField = new JTextField();
-		textField.setBounds(126, 210, 215, 20);
-		add(textField);
-		textField.setColumns(10);
+		txtFarma = new JTextField();
+		txtFarma.setBounds(126, 210, 215, 20);
+		add(txtFarma);
+		txtFarma.setColumns(10);
 		
 		JLabel lblId = new JLabel("ID del Proovedor");
 		lblId.setBounds(13, 308, 135, 14);
 		add(lblId);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(126, 305, 215, 20);
-		add(textField_1);
-		textField_1.setColumns(10);
+		txtID = new JTextField();
+		txtID.setBounds(126, 305, 215, 20);
+		add(txtID);
+		txtID.setColumns(10);
 		
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-			
+				bd.AgregarProovedor(txtNombre.getText(), txtID.getText(), txtFarma.getText(), txtNum.getText());
+				model=bd.modelProovedor();
+				table.setModel(model);
 				
 			}
 		});
@@ -87,6 +89,6 @@ public class newProovedor extends JPanel {
 			}
 		));
 		scrollPane.setViewportView(table);
-		
+		table.setModel(model);
 	}
 }

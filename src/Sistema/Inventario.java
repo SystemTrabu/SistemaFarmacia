@@ -216,8 +216,12 @@ public class Inventario extends JPanel {
 
 				bd.EliminarProducto(txtBuscar.getText());
 				try {
+					
+					model.setRowCount(0);
 					model=bd.tablaInventario();
 					table.setModel(model);
+					
+			
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
