@@ -42,7 +42,9 @@ public class Caja extends JPanel {
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				bd.agregarCaja(txtNom.getText(), Integer.parseInt(txtCant.getText()));
+				
+				hilos hilos=new hilos(1,txtNom.getText(),txtCant.getText());
+				hilos.start();
 				modelCaja=bd.returnModel();
 				table.setModel(modelCaja);
 				

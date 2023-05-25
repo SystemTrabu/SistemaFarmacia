@@ -42,8 +42,15 @@ public class deleteEmpleado extends JPanel {
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(txtID.getText().isEmpty()==false)bd.Delete("empleados",txtID.getText());
-				else JOptionPane.showMessageDialog(null, "Ingresa algo....");
+				if(txtID.getText().isEmpty()==false){
+					hilos hilos=new hilos(2, "empleados", txtID.getText());
+					hilos.run();
+					
+				}
+
+				else{
+					JOptionPane.showMessageDialog(null, "Ingresa algo....");
+				}
 				table.setModel(bd.modelEmpleado());
 				
 			}
